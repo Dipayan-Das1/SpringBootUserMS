@@ -67,7 +67,7 @@ public class UserPrincipal implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		// override this method
-		return true;
+		return userEntity.getEmailVerificationStatus();
 	}
 
 	public String getUserId() {

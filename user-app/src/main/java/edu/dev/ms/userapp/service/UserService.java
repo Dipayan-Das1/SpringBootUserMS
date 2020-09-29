@@ -19,4 +19,5 @@ UserResponseDto getUserByEmail(String email) throws UserNotFoundException;
 List<UserResponseDto> getUsers(int pageNo, int limit);
 List<AddressDto> getUserAddress(String userId);
 AddressDto getUserAddressById(String userId, String addressId);
+boolean verifyEmailAddress(String token);
 }

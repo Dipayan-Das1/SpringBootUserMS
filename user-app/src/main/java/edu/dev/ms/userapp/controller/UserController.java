@@ -1,19 +1,10 @@
 package edu.dev.ms.userapp.controller;
 
-import java.util.Arrays;
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,16 +13,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import edu.dev.ms.userapp.dto.AddressDto;
 import edu.dev.ms.userapp.dto.MessageDto;
 import edu.dev.ms.userapp.dto.UserDto;
 import edu.dev.ms.userapp.dto.UserResponseDto;
 import edu.dev.ms.userapp.exception.UserExistsException;
 import edu.dev.ms.userapp.exception.UserNotFoundException;
-import edu.dev.ms.userapp.repository.UserRepository;
 import edu.dev.ms.userapp.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -77,6 +67,21 @@ public class UserController {
 		log.info("Inside delete user {}",userId);
 		userService.deleteUser(userId);
 		return new MessageDto("User Deleted successfully");
+	}
+	
+	@GetMapping(path="/verify")
+	public MessageDto verifyUser(@RequestParam(name = "token") String token) throws UserExistsException
+	{
+		log.info("Inside verify user {}");
+		boolean verified = userService.verifyEmailAddress(token);
+		if(verified)
+		{
+			return new MessageDto("Email verified");
+		}
+		else
+		{
+			throw new IllegalArgumentException("Email token verification failed");
+		}
 	}
 	
 	

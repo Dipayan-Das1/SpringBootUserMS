@@ -9,4 +9,5 @@ import edu.dev.ms.userapp.entity.UserEntity;
 public interface UserRepository extends PagingAndSortingRepository<UserEntity, Long> {
 	UserEntity findByUserId(String userId);
 	UserEntity findByEmail(String email);
+	UserEntity findByEmailVerificationToken(String token);
 }

@@ -55,6 +55,9 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private ModelMapper modelMapper;
 	
+	@Autowired
+	private TokenServiceImpl tokenService;
+	
 
 	@Override
 	@Transactional(readOnly = false)
@@ -78,6 +81,7 @@ public class UserServiceImpl implements UserService{
 				addr.setUser(userEntity);
 			}
 		}
+		userEntity.setEmailVerificationToken(tokenService.generateEmailToken(user.getEmail()));
 		RoleEntity role = roleRepository.findByName("ROLE_USER");
 		userEntity.setRoles(Arrays.asList(role));
 		userRepository.save(userEntity);
@@ -218,6 +222,29 @@ public class UserServiceImpl implements UserService{
 		
 		return modelMapper.map(address, AddressDto.class);
 			
+	}
+	
+	public boolean verifyEmailAddress(String token)
+	{
+		boolean verified = false;
+		UserEntity user = userRepository.findByEmailVerificationToken(token);
+		if(user!=null)
+		{
+			boolean isTokenValid = tokenService.isEmailTokenVaid(token);
+			if(isTokenValid)
+			{
+				user.setEmailVerificationStatus(true);
+				user.setEmailVerificationToken(null);
+				userRepository.save(user);
+				verified = true;
+				log.debug("User verified {}",user.getEmail());
+			}
+			else
+			{
+				log.debug("User cannot be verified {}",user.getEmail());
+			}
+		}
+		return verified;
 	}
 	
 }
