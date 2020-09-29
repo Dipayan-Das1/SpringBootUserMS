@@ -43,7 +43,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@PostAuthorize("hasRole('ROLE_ADMIN') or #returnObject.userId == principal.userId")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or #userId == principal.userId")
 	@GetMapping(path = "/{userId}",produces= {MediaType.APPLICATION_JSON_VALUE,MediaType.APPLICATION_XML_VALUE})
 	public UserResponseDto getUser(@PathVariable String userId) throws UserNotFoundException
 	{

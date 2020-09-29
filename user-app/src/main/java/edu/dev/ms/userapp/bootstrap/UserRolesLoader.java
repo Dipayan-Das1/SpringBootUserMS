@@ -1,6 +1,7 @@
 package edu.dev.ms.userapp.bootstrap;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import edu.dev.ms.userapp.entity.AddressEntity;
 import edu.dev.ms.userapp.entity.AuthorityEntity;
 import edu.dev.ms.userapp.entity.RoleEntity;
 import edu.dev.ms.userapp.entity.UserEntity;
@@ -43,7 +45,7 @@ public class UserRolesLoader implements CommandLineRunner {
 		RoleEntity userRole = createRole("ROLE_USER", Arrays.asList(readAuthority, writeAuthority));
 		RoleEntity adminRole = createRole("ROLE_ADMIN", Arrays.asList(readAuthority, writeAuthority, deleteAuthority));
 		
-		UserEntity userEntity = createUser(Arrays.asList(adminRole));
+		UserEntity userEntity = createAdminUser(Arrays.asList(adminRole));
 		log.info("User created {}",userEntity.getEmail());
 		
 	}
@@ -72,7 +74,7 @@ public class UserRolesLoader implements CommandLineRunner {
 	}
 	
 	@Transactional(readOnly = false)
-	public UserEntity createUser(List<RoleEntity> roles) {
+	public UserEntity createAdminUser(List<RoleEntity> roles) {
 		UserEntity userEntity = userRepository.findByEmail("iamback_dipayan@yahoo.com");
 		if (userEntity == null) {
 			userEntity = new UserEntity();
@@ -86,4 +88,6 @@ public class UserRolesLoader implements CommandLineRunner {
 		}
 		return userEntity;
 	}
+	
+	
 }

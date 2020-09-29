@@ -66,7 +66,9 @@ public class CustomAuthorizationFilter extends BasicAuthenticationFilter{
 			UserEntity user = userRepository.findByEmail(userEmail); 
 			if(user == null) return null;
 			
-			return new UsernamePasswordAuthenticationToken(userEmail, null,new UserPrincipal(user).getAuthorities());
+			//return new UsernamePasswordAuthenticationToken(userEmail, null,new UserPrincipal(user).getAuthorities());
+			//the first argument passed to the next constructor becomes the principal object available for authentication and authorization (eg. at @Preauthorize and @PostAuthorize)
+			return new UsernamePasswordAuthenticationToken(new UserPrincipal(user), null,new UserPrincipal(user).getAuthorities());
 		}
 		return null;
 	}

@@ -66,13 +66,14 @@ public class UserPrincipal implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
+		// override this method
 		return true;
 	}
 
-	public String getId() {
+	public String getUserId() {
 		return userId;
 	}
+
 
 	
 

@@ -57,8 +57,7 @@ public class AddressController {
 		addressDto.add(userAddressesLink);
 		Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(getClass()).getUserAddress(userId, addressId)).withSelfRel();
 		addressDto.add(selfLink);
-		return addressDto;
-		
+		return addressDto;	
 	}
 
 }

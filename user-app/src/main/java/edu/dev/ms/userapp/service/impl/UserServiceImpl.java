@@ -2,6 +2,7 @@ package edu.dev.ms.userapp.service.impl;
 
 
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -23,11 +24,13 @@ import edu.dev.ms.userapp.dto.AddressDto;
 import edu.dev.ms.userapp.dto.UserDto;
 import edu.dev.ms.userapp.dto.UserResponseDto;
 import edu.dev.ms.userapp.entity.AddressEntity;
+import edu.dev.ms.userapp.entity.RoleEntity;
 import edu.dev.ms.userapp.entity.UserEntity;
 import edu.dev.ms.userapp.exception.AddressNotFoundException;
 import edu.dev.ms.userapp.exception.UserExistsException;
 import edu.dev.ms.userapp.exception.UserNotFoundException;
 import edu.dev.ms.userapp.repository.AddressRepository;
+import edu.dev.ms.userapp.repository.RoleRepository;
 import edu.dev.ms.userapp.repository.UserRepository;
 import edu.dev.ms.userapp.security.UserPrincipal;
 import edu.dev.ms.userapp.service.UserService;
@@ -39,6 +42,9 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
 	
 	@Autowired
 	private AddressRepository addressRepository;
@@ -72,6 +78,8 @@ public class UserServiceImpl implements UserService{
 				addr.setUser(userEntity);
 			}
 		}
+		RoleEntity role = roleRepository.findByName("ROLE_USER");
+		userEntity.setRoles(Arrays.asList(role));
 		userRepository.save(userEntity);
 		log.info("User created successfully {}",userEntity.toString());
 		UserResponseDto response = new UserResponseDto();
