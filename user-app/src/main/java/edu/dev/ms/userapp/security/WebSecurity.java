@@ -1,5 +1,8 @@
 package edu.dev.ms.userapp.security;
 
+import java.util.Arrays;
+
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,6 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -37,9 +43,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
 	///manage http security allowing access to sign up url
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		
+
+
 		System.out.println("Inside configure:WebSecurity http");
-		http.csrf().disable()
+		http.cors().and().csrf().disable()
 		.authorizeRequests()
 		.antMatchers(HttpMethod.POST,SecurityConstants.SIGN_UP_URL)
 		.permitAll()
@@ -63,6 +70,26 @@ public class WebSecurity extends WebSecurityConfigurerAdapter{
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		System.out.println("Inside configure:AuthenticationManagerBuilder ");
 		auth.userDetailsService(userDetailsService).passwordEncoder(bcryptPasswordEncoder);
+	}
+	
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource()
+	{
+		CorsConfiguration corsConfiguration = new CorsConfiguration();
+		
+		corsConfiguration.setAllowedHeaders(Arrays.asList("accept","Authorization","Content-Type"));
+		
+		corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST","PUT"));
+		
+		corsConfiguration.setAllowCredentials(true);
+		
+		corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:9000"));
+		
+		UrlBasedCorsConfigurationSource corsSource = new UrlBasedCorsConfigurationSource();
+		
+		corsSource.registerCorsConfiguration("/user/*", corsConfiguration);
+		
+		return corsSource;
 	}
 
 }

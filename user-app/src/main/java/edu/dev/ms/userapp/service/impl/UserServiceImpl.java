@@ -33,6 +33,7 @@ import edu.dev.ms.userapp.repository.AddressRepository;
 import edu.dev.ms.userapp.repository.RoleRepository;
 import edu.dev.ms.userapp.repository.UserRepository;
 import edu.dev.ms.userapp.security.UserPrincipal;
+import edu.dev.ms.userapp.service.EmailService;
 import edu.dev.ms.userapp.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,6 +58,9 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private TokenServiceImpl tokenService;
+	
+	@Autowired
+	private EmailService emailService;
 	
 
 	@Override
@@ -85,7 +89,8 @@ public class UserServiceImpl implements UserService{
 		RoleEntity role = roleRepository.findByName("ROLE_USER");
 		userEntity.setRoles(Arrays.asList(role));
 		userRepository.save(userEntity);
-		log.info("User created successfully {}",userEntity.toString());
+		emailService.verifyEmail(userEntity.getEmail(),userEntity.getEmailVerificationToken());
+		log.info("User created successfully {}",userEntity.getUserId());
 		UserResponseDto response = new UserResponseDto();
 		//BeanUtils.copyProperties(userEntity, response);
 		modelMapper.map(userEntity, response);
