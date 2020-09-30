@@ -66,8 +66,6 @@ public class EmailServiceImpl implements EmailService{
 	public void verifyEmail(String email,String verificationToken) {
 
 		// You can also set your keys this way. And it will work!
-		System.setProperty("aws.accessKeyId", "AKIA24EQZDWCM7G5FDFE"); 
-		System.setProperty("aws.secretKey", "+WUqPkoDdufUMS8EZ/0nrEbd02COP2jsQfzM90C3"); 
 		
 		///be careful with ewgions
 		AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard().withRegion(Regions.AP_SOUTH_1)
