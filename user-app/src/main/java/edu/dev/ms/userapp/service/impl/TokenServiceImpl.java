@@ -23,6 +23,16 @@ public class TokenServiceImpl {
 		return token;
 	}
 	
+	public String generatePasswordResetToken(String email)
+	{
+		String token = Jwts.builder()
+				.setSubject(email)
+				.setExpiration(new Date(Instant.now().plusMillis(SecurityConstants.PWD_RESET_EXPIRATION_TIME).toEpochMilli()))
+				.signWith(SignatureAlgorithm.HS512, SecurityConstants.TOKEN_SECRET) /// this creates a JWS token
+				.compact();
+		return token;
+	}
+	
 	public boolean isEmailTokenVaid(String token)
 	{
 		Claims claim = Jwts.parser()
@@ -30,5 +40,15 @@ public class TokenServiceImpl {
 				.parseClaimsJws(token).getBody();
 		Date expirationTime = claim.getExpiration();
 		return 	Instant.now().isBefore(Instant.ofEpochMilli(expirationTime.getTime()));	
+	}
+	
+	public boolean isResetPasswordTokenVaid(String token)
+	{
+		Claims claim = Jwts.parser()
+				.setSigningKey(SecurityConstants.TOKEN_SECRET)
+				.parseClaimsJws(token).getBody();
+		Date expirationTime = claim.getExpiration();
+		boolean valid =	Instant.now().isBefore(Instant.ofEpochMilli(expirationTime.getTime()));
+		return valid;
 	}
 }

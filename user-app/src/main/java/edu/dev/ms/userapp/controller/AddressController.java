@@ -3,17 +3,24 @@ package edu.dev.ms.userapp.controller;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.dev.ms.userapp.dto.AddressDto;
+import edu.dev.ms.userapp.dto.MessageDto;
 import edu.dev.ms.userapp.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,7 +53,7 @@ public class AddressController {
 	}
 	
 	@PreAuthorize("hasAuthority('READ_AUTHORITY')")
-	@GetMapping("/{userId}/addresses/{addressId}")
+	@GetMapping("/{addressId}")
 	public AddressDto getUserAddress(@PathVariable String userId,@PathVariable String addressId)
 	{
 		log.info("Inside get user addresses for user {}",userId);
@@ -59,5 +66,7 @@ public class AddressController {
 		addressDto.add(selfLink);
 		return addressDto;	
 	}
+	
+	
 
 }
