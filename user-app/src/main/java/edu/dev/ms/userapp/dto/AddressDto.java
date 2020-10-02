@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.hateoas.RepresentationModel;
 @Builder
@@ -23,7 +24,7 @@ public class AddressDto extends RepresentationModel<AddressDto>{
 	private String zipcode;
 	@NotEmpty(message="countrycannot be blank")
 	private String country;
-	@NotEmpty(message="Address type cannot be blank")
+	@NotNull(message="Address type cannot be blank")
 	private AddressType addressType;
 	private String addressId;
 }

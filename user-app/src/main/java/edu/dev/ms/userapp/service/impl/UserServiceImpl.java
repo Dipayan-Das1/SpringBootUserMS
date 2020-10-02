@@ -187,48 +187,6 @@ public class UserServiceImpl implements UserService{
 		return userList;
 	}
 
-	@Override
-	public List<AddressDto> getUserAddress(String userId)
-	{
-		UserEntity user = userRepository.findByUserId(userId);
-		if(user==null)
-		{
-			throw  UserNotFoundException.userNotFoundExceptionByUserId(userId);
-		}
-		List<AddressEntity> addresses = user.getAddresses();
-		
-		List<AddressDto> addressesList = new LinkedList<>();
-		if(addresses!=null)
-		{
-			addressesList = addresses.stream().map(addrEnity -> {
-				return modelMapper.map(addrEnity, AddressDto.class);
-			}).collect(Collectors.toList());
-		}
-		return addressesList;
-	}
-	
-	@Override
-	public AddressDto getUserAddressById(String userId,String addressId)
-	{
-		UserEntity user = userRepository.findByUserId(userId);
-		if(user==null)
-		{
-			throw  UserNotFoundException.userNotFoundExceptionByUserId(userId);
-		}
-		AddressEntity address = addressRepository.findByAddressId(addressId);
-		if(address == null)
-		{
-			throw  AddressNotFoundException.addressNotFoundByID(addressId);
-		}
-		if(!address.getUser().getId().equals(user.getId()))
-		{
-			throw  AddressNotFoundException.addressNotFoundByID(addressId);
-		}	
-		
-		return modelMapper.map(address, AddressDto.class);
-			
-	}
-	
 	public boolean verifyEmailAddress(String token)
 	{
 		boolean verified = false;

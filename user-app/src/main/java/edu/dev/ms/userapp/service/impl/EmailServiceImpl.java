@@ -32,7 +32,7 @@ public class EmailServiceImpl implements EmailService{
 			+ "<p>Thank you for registering with our mobile app. To complete registration process and be able to log in,"
 			+ " click on the following link: "
 			//+ "<a href='http://ec2-35-173-238-100.compute-1.amazonaws.com:8080/verification-service/email-verification.html?token=$tokenValue'>"
-			+ "<a href='http://localhost:9000/verify-email-app/verify-email.html?token=$tokenValue'>"
+			+ "<a href='http://localhost:9000/verify-app/verify-email.html?token=$tokenValue'>"
 			+ "Final step to complete your registration" + "</a><br/><br/>"
 			+ "Thank you! And we are waiting for you inside!";
 
@@ -41,7 +41,7 @@ public class EmailServiceImpl implements EmailService{
 			+ "Thank you for registering with our mobile app. To complete registration process and be able to log in,"
 			+ " open then the following URL in your browser window: "
 			//+ " http://ec2-35-173-238-100.compute-1.amazonaws.com:8080/verification-service/email-verification.html?token=$tokenValue"
-			+ " http://localhost:9000/verify-email-app/verify-email.html?token=$tokenValue"
+			+ " http://localhost:9000/verify-app/verify-email.html?token=$tokenValue"
 			+ " Thank you! And we are waiting for you inside!";
 	
 	
@@ -49,7 +49,7 @@ public class EmailServiceImpl implements EmailService{
 		      + "<p>Hi, $firstName!</p> "
 		      + "<p>Someone has requested to reset your password with our project. If it were not you, please ignore it."
 		      + " otherwise please click on the link below to set a new password: " 
-		      + "<a href='http://localhost:8080/verification-service/password-reset.html?token=$tokenValue'>"
+		      + "<a href='http://localhost:8080/verify-app/password-reset.html?token=$tokenValue'>"
 		      + " Click this link to Reset Password"
 		      + "</a><br/><br/>"
 		      + "Thank you!";
@@ -59,13 +59,12 @@ public class EmailServiceImpl implements EmailService{
 		      + "Hi, $firstName! "
 		      + "Someone has requested to reset your password with our project. If it were not you, please ignore it."
 		      + " otherwise please open the link below in your browser window to set a new password:" 
-		      + " http://localhost:8080/verification-service/password-reset.html?token=$tokenValue"
+		      + " http://localhost:8080/verify-app/password-reset.html?token=$tokenValue"
 		      + " Thank you!";
 	
 	@Override	  
 	public void verifyEmail(String email,String verificationToken) {
 
-		// You can also set your keys this way. And it will work!
 		
 		///be careful with ewgions
 		AmazonSimpleEmailService client = AmazonSimpleEmailServiceClientBuilder.standard().withRegion(Regions.AP_SOUTH_1)
@@ -91,7 +90,7 @@ public class EmailServiceImpl implements EmailService{
 	@Override
 	 public boolean sendPasswordResetRequest(String firstName, String email, String token)
 	  {
-		
+				
 	      boolean returnValue = false;
 	 
 	      AmazonSimpleEmailService client = 

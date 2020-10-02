@@ -53,7 +53,8 @@ public class UserController {
 		UserResponseDto createduser = userService.createUser(user);
 		return new MessageDto(String.format("User Created successfully with id %s", createduser.getUserId()));
 	}
-
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN') or #userId == principal.userId")
 	@PutMapping(path = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public UserResponseDto updateUser(@PathVariable String userId, @Valid @RequestBody UserDto user) {
 		log.info("Inside update user {}", userId);

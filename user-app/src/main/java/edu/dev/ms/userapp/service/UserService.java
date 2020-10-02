@@ -17,7 +17,5 @@ public UserResponseDto updateUser(String userId,UserDto user);
 public void deleteUser(String userId);
 UserResponseDto getUserByEmail(String email) throws UserNotFoundException;
 List<UserResponseDto> getUsers(int pageNo, int limit);
-List<AddressDto> getUserAddress(String userId);
-AddressDto getUserAddressById(String userId, String addressId);
 boolean verifyEmailAddress(String token);
 }
