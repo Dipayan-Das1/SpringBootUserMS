@@ -14,9 +14,11 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>user-app</name>
 	<description>Development project integrating with AWS SES,  AWS SNS, Spring HATEOAS and JWT Auth </description>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<properties>
 		<java.version>1.8</java.version>
+		<docker.image.prefix>user-ms</docker.image.prefix>
+		<docker.image.name>user-app</docker.image.name>
 	</properties>
 
 	<dependencies>
@@ -133,6 +135,36 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+			<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.33.0</version>
+				<configuration>
+				<dockerHost>http://127.0.0.1:2375</dockerHost>
+				<verbose>true</verbose>
+					<images>
+						<image>
+							<name>${docker.image.prefix}/${docker.image.name}</name>
+							<build>
+							<!-- Dockerfile is in /src/main/docker -->
+								<dockerFileDir>${project.basedir}/src/main/docker/</dockerFileDir>
+								 <!--copies artficact to docker build dir in target inside maven directory-->
+								<assembly>
+									<descriptorRef>artifact</descriptorRef>
+								</assembly>
+								
+								<tags>
+									<tag>latest</tag>
+								</tags>
+							</build>
+						</image>
+					</images>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
