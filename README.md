@@ -1,1 +1,1 @@
-# SpringBootUserMS
+A sample microservice project using spring boot showcasing User registration, email verification, password reset and login. Using JWT tokens to verify client calls, using local mysql for db, for email service we are AWS SES, spring hateoas to comply with hateoas specs and for creating  docker images we are using fabric8 maven plugin.
