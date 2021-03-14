@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Verify email Page</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+	var urlParams = new URLSearchParams(location.search);
+	if(urlParams.has('token'))
+		{
+		alert(urlParams.get('token'));
+		verifyToken(urlParams.get('token'));
+		}
+	
+	function verifyToken(token)
+	{
+		alert("verify token");		
+		$.get("http://localhost:8080/user-app/user/verify",{token: token})
+		.done(function(){ 
+		    alert("success");
+			$("#verify-success").attr('style','display:block');
+			$("#verify-failure").attr('style','display:none');
+
+		})
+		.fail(function(){
+		    alert("error(fail)");
+			$("#verify-success").attr('style','display:none');
+			$("#verify-failure").attr('style','display:block');
+
+		});
+	}
+}
+)
+</script>
+</head>
+<body>
+<div id="verify-success" style="display:none">Email verification successful</div>
+<div id="verify-failure" style="display:none">Email verification Failed</div>
+</body>
+</html>
